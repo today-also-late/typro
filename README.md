@@ -56,4 +56,5 @@ npm install next react react-dom
 
 ### prettier setup
 Install prettier as an extension of vscode.
+
 Restart vscode.
