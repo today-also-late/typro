@@ -32,3 +32,24 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Environment setting
+
+### Installation of Node.js・npm
+<a href= "https://nodejs.org/ja/">Node.js' official website</a><br>
+<img src="image/Nodejsofficial.png" width="400">
+
+### Installation of npm
+for Mac
+```
+sudo npm install -g npm
+```
+for Windows
+```
+npm install -g npm
+```
+
+### Installation of next.js
+```
+npm install next react react-dom
+```
