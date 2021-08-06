@@ -20,6 +20,9 @@ const Play = () => {
 
   const InputCode = useCallback(
     (event) => {
+      if (event.target.value === "'") {
+        event.target.value = '"';
+      }
       setCode(event.target.value);
     },
     [setCode]
