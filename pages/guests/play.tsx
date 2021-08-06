@@ -52,27 +52,42 @@ const Play = () => {
   };
 
   return (
-    <div className="flex justify-center items-center ">
-      <h1>{question}</h1>
-      <TextInput
-        fullWidth={false}
-        label={"ここにコードを入力"}
-        margin="dense"
-        multiline={false}
-        required={true}
-        rows={1}
-        value={code}
-        type={"text"}
-        onChange={InputCode}
-        onKeyDown={(e) => Judge(e, code)}
-      />
-      <div>
+    <body className="w-screen h-screen flex justify-center items-center">
+      <div className="w-1/4">
+        <div className="text-center">menu</div>
+        <br />
+        <div className="text-center">ヒント</div>
+        <br />
+        <div className="text-center">一時停止</div>
+        <br />
+        <div className="text-center">出力</div>
+        <br />
+      </div>
+      <div className="w-2/4">
+        <h1 className="text-center font-mono text-2xl">{question}</h1>
+        <TextInput
+          fullWidth={true}
+          autoFocus={true}
+          margin="dense"
+          multiline={false}
+          required={true}
+          rows={1}
+          value={code}
+          type={"text"}
+          variant={"outlined"}
+          onChange={InputCode}
+          onKeyDown={(e) => Judge(e, code)}
+        />
+      </div>
+      <div className="w-1/4">
         {answers.length > 0 &&
           answers.map((answer: string, index: number) => (
-            <div key={index}>{answer}</div>
+            <div className="ml-24 text-lg" key={index}>
+              {index + 1} : {answer}
+            </div>
           ))}
       </div>
-    </div>
+    </body>
   );
 };
 export default Play;

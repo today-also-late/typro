@@ -6,7 +6,7 @@ type PROPS = {};
 
 const Header: React.FC<PROPS> = (props) => {
   return (
-    <div className="flex h-16 bg-gray-400 ">
+    <div className="w-screen fixed flex h-16 bg-gray-400">
       <div className="flex items-center justify-evenly w-2/5">
         <Label labelText="概要" />
         <Label labelText="問題" />
