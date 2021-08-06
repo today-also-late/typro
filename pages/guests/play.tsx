@@ -53,14 +53,14 @@ const Play = () => {
 
   return (
     <body className="w-screen h-screen flex justify-center items-center">
-      <div className="w-1/4">
-        <div className="text-center">menu</div>
+      <div className="w-1/4 text-center">
+        <div className="">menu</div>
         <br />
-        <div className="text-center">ヒント</div>
+        <div className="">ヒント</div>
         <br />
-        <div className="text-center">一時停止</div>
+        <div className="">一時停止</div>
         <br />
-        <div className="text-center">出力</div>
+        <div className="">出力</div>
         <br />
       </div>
       <div className="w-2/4">
@@ -79,10 +79,10 @@ const Play = () => {
           onKeyDown={(e) => Judge(e, code)}
         />
       </div>
-      <div className="w-1/4">
+      <div className="w-1/4  text-lg">
         {answers.length > 0 &&
           answers.map((answer: string, index: number) => (
-            <div className="ml-24 text-lg" key={index}>
+            <div className="ml-24" key={index}>
               {index + 1} : {answer}
             </div>
           ))}
