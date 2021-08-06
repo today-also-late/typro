@@ -1,21 +1,22 @@
 import { useCallback } from "react";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { TextInput } from "../../components/";
-
-import { getAnswersState } from "../../reducks/answers/selectors";
-import answersSlice from "../../reducks/answers/answerSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { TextInput } from "../../components/atoms";
+import answersSlice from "../../redux/slices/answerSlice";
 import questionsJson from "../../questions.json";
 import { useEffect } from "react";
+import { getAnswers } from "../../redux/slices/answerSlice";
 
 const Play = () => {
   const dispatch = useDispatch();
 
-  const answers = getAnswersState().answers["answers"];
+  // const answers = getAnswersState().answers["answers"];
+  const answers = useSelector(getAnswers).answers;
 
   const [code, setCode] = useState("");
   const [question, setQuesiton] = useState("");
   const [currentId, setCurrentId] = useState("1");
+  console.log(answers);
 
   const InputCode = useCallback(
     (event) => {
