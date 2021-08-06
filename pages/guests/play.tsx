@@ -16,13 +16,9 @@ const Play = () => {
   const [code, setCode] = useState("");
   const [question, setQuesiton] = useState("");
   const [currentId, setCurrentId] = useState("1");
-  console.log(answers);
 
   const InputCode = useCallback(
     (event) => {
-      if (event.target.value === "'") {
-        event.target.value = '"';
-      }
       setCode(event.target.value);
     },
     [setCode]
@@ -43,6 +39,9 @@ const Play = () => {
 
   const Judge = (e: any, code: string) => {
     if (e.key === "Enter") {
+      if (code.match(/'/)) {
+        code = code.replace(/'/g, '"');
+      }
       if (code === question) {
         dispatch(answersSlice.actions.addAnswers(code));
         setCode("");
