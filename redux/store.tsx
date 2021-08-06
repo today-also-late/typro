@@ -3,7 +3,7 @@ import logger from "redux-logger";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import answersSlice, {
   initialState as answersState,
-} from "./answers/answerSlice";
+} from "./slices/answerSlice";
 
 const rootReducer = combineReducers({
   answers: answersSlice.reducer,

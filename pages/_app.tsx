@@ -1,7 +1,7 @@
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import { Provider } from "react-redux";
-import createStore from "../reducks/store";
+import createStore from "../redux/store";
 
 export const store = createStore();
 
