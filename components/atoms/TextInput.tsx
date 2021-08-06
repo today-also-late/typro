@@ -3,13 +3,14 @@ import TextField from "@material-ui/core/TextField";
 
 type TextField = {
   fullWidth: boolean;
-  label: string;
+  autoFocus: boolean;
   margin: string;
   multiline: boolean;
   required: boolean;
   rows: number;
   value: string;
   type: string;
+  variant: string;
   onChange: React.ChangeEventHandler;
   onKeyDown: React.KeyboardEventHandler;
 };
@@ -19,13 +20,14 @@ const TextInput = (props: TextField) => {
     <TextField
       className=""
       fullWidth={props.fullWidth}
-      label={props.label}
+      autoFocus={props.autoFocus}
       margin="dense"
       multiline={props.multiline}
       required={props.required}
       rows={props.rows}
       value={props.value}
       type={props.type}
+      variant={"outlined"}
       onChange={props.onChange}
       onKeyDown={(e) => props.onKeyDown(e)}
     />
