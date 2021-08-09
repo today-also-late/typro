@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { StoreState } from "../store";
+import { RootState } from "../store";
 
 export type AnswersState = {
   answers: string[];
@@ -22,6 +22,6 @@ const answersSlice = createSlice({
   },
 });
 
-export const getAnswers = (state: StoreState) => state.answers;
+export const getAnswers = (state: RootState) => state.answers;
 
 export default answersSlice;
