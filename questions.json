@@ -1,10 +1,18 @@
 {
   "questions": {
     "easy": {
-      "1": "print(\"Hello World\")",
-      "2": "print(\"Hi This is 2\")",
-      "3": "print(\"Hi This is 3\")",
-      "4": "print(\"Hi This is 4\")"
+      "input": {
+        "1": "print(\"Hello World\")",
+        "2": "print(\"Hi This is 2\")",
+        "3": "print(\"Hi This is 3\")",
+        "4": "print(\"Hi This is 4\")"
+      },
+      "output": {
+        "1": "Hello World",
+        "2": "Hi This is 2",
+        "3": "Hi This is 3",
+        "4": "Hi This is 4"
+      }
     }
   }
 }
