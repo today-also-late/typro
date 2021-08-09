@@ -1,16 +1,16 @@
 import React, { Component, useState, useEffect } from "react";
 import { init } from "ityped";
 
-const Hello = () => {
+const ITyped = () => {
   useEffect(() => {
-    const myElement: any = document.querySelector("#myElement");
-    init(myElement, {
+    const iTyped: any = document.querySelector("#iTyped");
+    init(iTyped, {
       showCursor: false,
-      strings: ["Welcome to TyPro", "Yeah!"],
+      strings: ["Welcome to TyPro.", "Yeah!"],
     });
   }, []);
 
-  return <div id="myElement" className="text-4xl font-mono"></div>;
+  return <div id="iTyped" className="text-4xl font-mono"></div>;
 };
 
-export default Hello;
+export default ITyped;
