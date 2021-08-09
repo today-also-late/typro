@@ -22,6 +22,8 @@ const answersSlice = createSlice({
   },
 });
 
+export const { addAnswers } = answersSlice.actions;
+
 export const getAnswers = (state: StoreState) => state.answers;
 
 export default answersSlice;
