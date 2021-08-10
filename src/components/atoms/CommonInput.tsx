@@ -3,14 +3,15 @@ import TextField from "@material-ui/core/TextField";
 
 type TextField = {
   fullWidth: boolean;
-  focus: boolean;
-  margin: string;
+  label: string;
+  focus?: boolean;
+  margin?: string;
   multiline: boolean;
   required: boolean;
   rows: number;
   value: string;
   type: string;
-  variant: string;
+  variant?: string;
   onChange: React.ChangeEventHandler;
 };
 
@@ -18,6 +19,7 @@ const CommonInput = (props: TextField) => {
   return (
     <TextField
       className=""
+      label={props.label}
       fullWidth={props.fullWidth}
       autoFocus={props.focus}
       margin="dense"
