@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { StoreState } from "../../store";
+import { RootState } from "../../store";
 import {
   auth,
   FirebaseTimestamp,
@@ -183,6 +183,6 @@ export const userSlice = createSlice({
 
 export const { updateUserState } = userSlice.actions;
 
-export const getUser = (state: StoreState) => state.user;
+export const getUser = (state: RootState) => state.user;
 
 export default userSlice;
