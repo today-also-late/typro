@@ -60,27 +60,36 @@ Install prettier as an extension of vscode.
 
 Restart vscode.
 
+## firebase
+
+アカウントandプロジェクトandアプリを作成して各種キーを取得してください
+
+Firebase Authenticationでメール、パスワードを有効にしてください
+
+Cloud Firestoreでデータベースを作成してください
+
+
 ## 環境設定
 
 ### ①.env
 
-各自.envファイルを作って以下のキーを記述してください
+各自.envファイルを作って以下の*に自分のキーを記述してください
 
-NEXT_PUBLIC_FIREBASE_API_KEY=""
+NEXT_PUBLIC_FIREBASE_API_KEY="******************"
 
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=""
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="******************"
 
-REACT_APP_FIREBASE_DATABASE=""
+REACT_APP_FIREBASE_DATABASE="******************"
 
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=""
+NEXT_PUBLIC_FIREBASE_PROJECT_ID="******************"
 
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=""
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="******************"
 
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=""
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="******************"
 
-NEXT_PUBLIC_FIREBASE_APP_IDD=""
+NEXT_PUBLIC_FIREBASE_APP_IDD="******************"
 
-REACT_APP_FIREBASE_MEASUREMENT_ID=""
+REACT_APP_FIREBASE_MEASUREMENT_ID="******************"
 
 ### ②.firebaserc
 
