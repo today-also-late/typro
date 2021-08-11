@@ -60,9 +60,11 @@ Install prettier as an extension of vscode.
 
 Restart vscode.
 
-## .envファイル
+## 環境設定
 
-各自.envファイルを作って以下のキーを入力してください
+### .env
+
+各自.envファイルを作って以下のキーを記述してください
 
 NEXT_PUBLIC_FIREBASE_API_KEY=""
 
@@ -79,3 +81,10 @@ NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=""
 NEXT_PUBLIC_FIREBASE_APP_IDD=""
 
 REACT_APP_FIREBASE_MEASUREMENT_ID=""
+
+### .firebaserc
+
+defaultに各自のプロジェクトのIDを記述してください
+
+### firebase deploy --only firestore:rules
+### firebase init
