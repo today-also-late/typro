@@ -22,11 +22,8 @@ const answersSlice = createSlice({
   },
 });
 
-<<<<<<< HEAD
-=======
 export const { addAnswers } = answersSlice.actions;
 
->>>>>>> test
 export const getAnswers = (state: RootState) => state.answers;
 
 export default answersSlice;

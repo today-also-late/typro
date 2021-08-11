@@ -1,11 +1,7 @@
 import type { AppProps } from "next/app";
 import "../../styles/globals.css";
 import { Provider } from "react-redux";
-<<<<<<< HEAD:pages/_app.tsx
-import { store } from "../redux/store";
-=======
 import { store } from "../../redux/store";
->>>>>>> test:src/pages/_app.tsx
 import Header from "../components/organisms/Header";
 import Auth from "../firebase/Auth";
 
