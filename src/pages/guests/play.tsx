@@ -2,29 +2,34 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "../../components/atoms";
-import answersSlice from "../../redux/slices/answerSlice";
-import questionsJson from "../../questions.json";
+import { addAnswers } from "../../../redux/slices/answerSlice";
+import questionsJson from "../../../questions.json";
 import { useEffect } from "react";
-import { getAnswers } from "../../redux/slices/answerSlice";
+import { getAnswers } from "../../../redux/slices/answerSlice";
 
 const Play = () => {
   const dispatch = useDispatch();
 
-  // const answers = getAnswersState().answers["answers"];
   const answers = useSelector(getAnswers).answers;
 
   const [code, setCode] = useState("");
   const [question, setQuesiton] = useState("");
   const [currentId, setCurrentId] = useState("1");
+  const [alertText, setAlertText] = useState("");
 
   const InputCode = useCallback(
     (event) => {
+      setAlertText("");
+      if (event.target.value.match(/  /)) {
+        event.target.value = event.target.value.replace(/  /g, " ");
+      }
       setCode(event.target.value);
     },
     [setCode]
   );
 
-  const questions: { [key: string]: string } = questionsJson.questions.easy;
+  const questions: { [key: string]: { [key: string]: string } } =
+    questionsJson.questions.easy;
 
   useEffect(() => {
     (async () => {
@@ -33,8 +38,8 @@ const Play = () => {
   }, []);
 
   const displayNextQuestion = (nextQuestionId: string) => {
+    setQuesiton(questions["input"][nextQuestionId]);
     setCurrentId(nextQuestionId);
-    setQuesiton(questions[nextQuestionId]);
   };
 
   const Judge = (e: any, code: string) => {
@@ -43,12 +48,13 @@ const Play = () => {
         code = code.replace(/'/g, '"');
       }
       if (code === question) {
-        dispatch(answersSlice.actions.addAnswers(code));
+        dispatch(addAnswers(code));
         setCode("");
+        setAlertText("正解です。");
         let nextQuestionId = (Number(currentId) + 1).toString();
         displayNextQuestion(nextQuestionId);
       } else {
-        console.log("コードが違います");
+        setAlertText("コードが違います。");
       }
     }
   };
@@ -80,6 +86,7 @@ const Play = () => {
           onChange={InputCode}
           onKeyDown={(e) => Judge(e, code)}
         />
+        <div className="text-center text-red-500">{alertText}</div>
       </div>
       <div className="w-1/4  text-lg">
         {answers.length > 0 &&

@@ -34,12 +34,20 @@ import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import answersSlice, {
   initialState as answersState,
 } from "./slices/answerSlice";
+<<<<<<< HEAD
 import userReducer from "./slices/userSlice";
+=======
+import userReducer, { userSlice } from "./slices/user/userSlice";
+>>>>>>> test
 
 export const store = configureStore({
   reducer: {
     answers: answersSlice.reducer,
+<<<<<<< HEAD
     user: userReducer,
+=======
+    user: userSlice.reducer,
+>>>>>>> test
   },
 });
 
