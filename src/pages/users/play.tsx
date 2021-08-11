@@ -10,12 +10,16 @@ import {
   updateQuestionsState,
 } from "../../../redux/slices/questionSlice";
 import { db } from "../../firebase/firebase";
+import { useRouter } from "next/router";
 
 const Play = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const answers = useSelector(getAnswers).answers;
   const questions = useSelector(getQuestions).questions;
+
+  const language: any = router.query["language"];
 
   const [code, setCode] = useState("");
   const [question, setQuesiton] = useState("");
@@ -35,9 +39,10 @@ const Play = () => {
 
   useEffect(() => {
     (async () => {
+      console.log(language);
       await db
         .collection("questions")
-        .doc("Python")
+        .doc(language)
         .get()
         .then((doc) => {
           const data: any = doc.data();
