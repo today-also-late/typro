@@ -8,6 +8,10 @@ service cloud.firestore {
         allow updata: if request.auth.uid == userId;
         allow delete: if request.auth.uid == userId;
       }
+      match /questions/{quetionId} {
+      allow read;
+      allow write;
+    }
     }
   }
 }

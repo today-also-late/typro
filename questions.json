@@ -1,17 +1,32 @@
 {
-  "questions": {
-    "easy": {
-      "input": {
-        "1": "print(\"Hello World\")",
-        "2": "print(\"Hi This is 2\")",
-        "3": "print(\"Hi This is 3\")",
-        "4": "print(\"Hi This is 4\")"
+  "Python": {
+    "1": {
+      "src": {
+        "1": "print(\"Hello Python\")",
+        "2": "print(\"This is Python code\")"
       },
       "output": {
-        "1": "Hello World",
-        "2": "Hi This is 2",
-        "3": "Hi This is 3",
-        "4": "Hi This is 4"
+        "1": "Hello Python",
+        "2": "This is Python code"
+      }
+    },
+    "2": {
+      "src": {
+        "1": "a=[1,7,4,9,12,19]",
+        "2": "print(max(a))"
+      },
+      "output": {
+        "1": "19"
+      }
+    },
+    "3": {
+      "src": {
+        "1": "N=10",
+        "2": "for i in range(N):",
+        "3": "  print(i)"
+      },
+      "output": {
+        "1": "0 1 2 3 4 5 6 7 8 9"
       }
     }
   }
