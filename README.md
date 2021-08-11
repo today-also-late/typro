@@ -86,5 +86,8 @@ REACT_APP_FIREBASE_MEASUREMENT_ID=""
 
 defaultに各自のプロジェクトのIDを記述してください
 
-### ③firebase deploy --only firestore:rules
-### ④firebase init
+## 以下ターミナルで入力
+### ③npm i
+### ④firebase login
+### ⑤firebase deploy --only firestore:rules
+### ⑥firebase init
