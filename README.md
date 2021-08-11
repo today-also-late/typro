@@ -62,7 +62,7 @@ Restart vscode.
 
 ## 環境設定
 
-### .env
+### ①.env
 
 各自.envファイルを作って以下のキーを記述してください
 
@@ -82,9 +82,9 @@ NEXT_PUBLIC_FIREBASE_APP_IDD=""
 
 REACT_APP_FIREBASE_MEASUREMENT_ID=""
 
-### .firebaserc
+### ②.firebaserc
 
 defaultに各自のプロジェクトのIDを記述してください
 
-### firebase deploy --only firestore:rules
-### firebase init
+### ③firebase deploy --only firestore:rules
+### ④firebase init
