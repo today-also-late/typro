@@ -1,9 +1,9 @@
 import { CommonInput } from "../components/atoms";
 import { useCallback, useState } from "react";
-import { fetchUser } from "../../redux/slices/user/userSlice";
+import { fetchUser } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PrimaryButton from "../components/atoms/PrimaryButton";
-import { getUser } from "../../redux/slices/user/userSlice";
+import { getUser } from "../../redux/slices/userSlice";
 import Link from "next/link";
 
 const SignIn = () => {

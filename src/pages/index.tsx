@@ -1,10 +1,8 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, signOutUser } from "../../redux/slices/user/userSlice";
+import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
-import { ContainedButton, PrimaryButton } from "../components/atoms";
+import { ContainedButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
 
 type HOME = {
@@ -50,20 +48,11 @@ export default function Home({
           </div>
 
           <div className="w-1/2 text-center">
-            <ContainedButton label={"登録してプレイ"} href={"/user"} />
+            <ContainedButton
+              label={"登録してプレイ"}
+              href={"/users/selectlanguage"}
+            />
           </div>
-          {isSignedIn ? (
-            <PrimaryButton
-              label={"sign out"}
-              onClick={() => dispatch(signOutUser())}
-            />
-          ) : (
-            <PrimaryButton
-              label={"sign out"}
-              onClick={() => dispatch(signOutUser())}
-            />
-          )}
-          {/* リロードするとReduxのstateが初期化される問題 */}
         </div>
       </div>
     </div>

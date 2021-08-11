@@ -1,6 +1,6 @@
 import { PrimaryButton, CommonInput } from "../components/atoms";
 import { useCallback, useState } from "react";
-import { addUser } from "../../redux/slices/user/userSlice";
+import { addUser } from "../../redux/slices/userSlice";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 
