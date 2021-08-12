@@ -31,15 +31,15 @@
 // export default createStore;
 
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import answersSlice, {
-  initialState as answersState,
-} from "./slices/answerSlice";
-import userReducer, { userSlice } from "./slices/user/userSlice";
+import answersSlice from "./slices/answersSlice";
+import questionsSlice from "./slices/questionSlice";
+import userSlice from "./slices/userSlice";
 
 export const store = configureStore({
   reducer: {
     answers: answersSlice.reducer,
     user: userSlice.reducer,
+    questions: questionsSlice.reducer,
   },
 });
 
