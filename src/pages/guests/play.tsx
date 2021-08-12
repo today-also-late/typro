@@ -9,7 +9,7 @@ import {
   getQuestions,
   updateQuestionsState,
 } from "../../../redux/slices/questionSlice";
-import { db } from "../../firebase/firebase";
+import { emptyAnswers } from "../../../redux/slices/answersSlice";
 
 const Play = () => {
   const dispatch = useDispatch();
@@ -35,19 +35,13 @@ const Play = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      await db
-        .collection("questions")
-        .doc("Python")
-        .get()
-        .then((doc) => {
-          const data: any = doc.data();
-          dispatch(updateQuestionsState(data["1"]));
-        });
+    dispatch(emptyAnswers()); // リロードされたときにanswerstateを空にする
+    dispatch(updateQuestionsState({ language: "Python", level: "1" }));
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-      displayNextQuestion(currentId);
-    })();
-  }, [question]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    displayNextQuestion(currentId);
+  }, [questions]);
 
   const displayNextQuestion = (nextQuestionId: string) => {
     setQuesiton(questions["src"][nextQuestionId]);

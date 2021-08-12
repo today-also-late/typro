@@ -44,8 +44,11 @@ const Play = () => {
   useEffect(() => {
     dispatch(emptyAnswers()); // リロードされたときにanswerstateを空にする
     dispatch(updateQuestionsState(selected));
+  }, []);
+
+  useEffect(() => {
     displayNextQuestion(currentId);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [questions]);
 
   const displayNextQuestion = (nextQuestionId: string) => {
     setQuesiton(questions["src"][nextQuestionId]);

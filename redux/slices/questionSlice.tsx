@@ -45,13 +45,26 @@ export const updateQuestionsState = createAsyncThunk(
 const questionsSlice = createSlice({
   name: "questions",
   initialState,
-  reducers: {},
+  reducers: {
+    emptyQuestions: () => ({
+      questions: {
+        src: {
+          "": "",
+        },
+        output: {
+          "": "",
+        },
+      },
+    }),
+  },
   extraReducers: (builder) => {
     builder.addCase(updateQuestionsState.fulfilled, (state, action: any) => {
       state.questions = action.payload; // payloadCreatorでreturnされた値
     });
   },
 });
+
+export const { emptyQuestions } = questionsSlice.actions;
 
 export const getQuestions = (state: RootState) => state.questions;
 

@@ -7,6 +7,7 @@ import { ContainedButton, PrimaryButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
 import { emptyAnswers } from "../../redux/slices/answersSlice";
 import Router from "next/router";
+import { emptyQuestions } from "../../redux/slices/questionSlice";
 
 type HOME = {
   title: string;
@@ -28,6 +29,7 @@ export default function Home({
 
   useEffect(() => {
     dispatch(emptyAnswers());
+    dispatch(emptyQuestions());
   }, []);
 
   const handleClick = () => {
