@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "../../components/atoms";
-import { addAnswers } from "../../../redux/slices/answersSlice";
+import { addSrcAnswers } from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers } from "../../../redux/slices/answersSlice";
 import {
@@ -14,7 +14,8 @@ import { db } from "../../firebase/firebase";
 const Play = () => {
   const dispatch = useDispatch();
 
-  const answers = useSelector(getAnswers).answers;
+  const srcAnswers = useSelector(getAnswers).answers.src;
+
   const questions = useSelector(getQuestions).questions;
 
   const [code, setCode] = useState("");
@@ -59,7 +60,7 @@ const Play = () => {
         code = code.replace(/'/g, '"');
       }
       if (code === question) {
-        dispatch(addAnswers(code));
+        dispatch(addSrcAnswers(code));
         setCode("");
         setAlertText("正解です。");
         let nextQuestionId = (Number(currentId) + 1).toString();
@@ -100,8 +101,8 @@ const Play = () => {
         <div className="text-center text-red-500">{alertText}</div>
       </div>
       <div className="w-1/4  text-lg">
-        {answers.length > 0 &&
-          answers.map((answer: string, index: number) => (
+        {srcAnswers.length > 0 &&
+          srcAnswers.map((answer: string, index: number) => (
             <div className="ml-24" key={index}>
               {index + 1} : {answer}
             </div>
