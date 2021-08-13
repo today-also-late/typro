@@ -100,3 +100,6 @@ defaultに各自のプロジェクトのIDを記述してください
 ### ④firebase login
 ### ⑤firebase deploy --only firestore:rules
 ### ⑥firebase init
+
+## firebaseに問題を追加するとき
+curl -X POST https://YOUR_REGION-YOUR_PROJECT_NAME.cloudfunctions.net/addDataset -H "Content-Type:application/json" -d @questions.json
