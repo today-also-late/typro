@@ -25,20 +25,46 @@ export const initialState: QuestionsState = {
   },
 };
 
+type Selected = {
+  language: string;
+  level: string;
+};
+
+export const updateQuestionsState = createAsyncThunk(
+  "questions/updateQuestionsState",
+  async (selected: Selected) => {
+    const { language, level } = selected;
+
+    const response: firebase.default.firestore.DocumentData | any = await (
+      await db.collection("questions").doc(language).get()
+    ).data();
+    return response[level];
+  }
+);
+
 const questionsSlice = createSlice({
   name: "questions",
   initialState,
   reducers: {
-    updateQuestionsState: (state, action: any) => ({
+    emptyQuestions: () => ({
       questions: {
-        ...state,
-        ...action.payload,
-      } /* もとの配列を展開して新しい配列を作る */,
+        src: {
+          "": "",
+        },
+        output: {
+          "": "",
+        },
+      },
     }),
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateQuestionsState.fulfilled, (state, action: any) => {
+      state.questions = action.payload; // payloadCreatorでreturnされた値
+    });
   },
 });
 
-export const { updateQuestionsState } = questionsSlice.actions;
+export const { emptyQuestions } = questionsSlice.actions;
 
 export const getQuestions = (state: RootState) => state.questions;
 

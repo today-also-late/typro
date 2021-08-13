@@ -2,24 +2,28 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "../../components/atoms";
-import { addAnswers } from "../../../redux/slices/answersSlice";
+import { addSrcAnswers } from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
-import { getAnswers } from "../../../redux/slices/answersSlice";
+import { getAnswers, emptyAnswers } from "../../../redux/slices/answersSlice";
 import {
   getQuestions,
   updateQuestionsState,
 } from "../../../redux/slices/questionSlice";
 import { db } from "../../firebase/firebase";
 import { useRouter } from "next/router";
+import Router from "next/router";
 
 const Play = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const answers = useSelector(getAnswers).answers;
+  const srcAnswers = useSelector(getAnswers).answers.src;
   const questions = useSelector(getQuestions).questions;
 
   const language: any = router.query["language"];
+  const level: any = router.query["level"];
+
+  const selected = { language: language, level: level };
 
   const [code, setCode] = useState("");
   const [question, setQuesiton] = useState("");
@@ -38,24 +42,20 @@ const Play = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      console.log(language);
-      await db
-        .collection("questions")
-        .doc(language)
-        .get()
-        .then((doc) => {
-          const data: any = doc.data();
-          dispatch(updateQuestionsState(data["1"]));
-        });
+    dispatch(emptyAnswers()); // リロードされたときにanswerstateを空にする
+    dispatch(updateQuestionsState(selected));
+  }, []);
 
-      displayNextQuestion(currentId);
-    })();
-  }, [question]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    displayNextQuestion(currentId);
+  }, [questions]);
 
   const displayNextQuestion = (nextQuestionId: string) => {
     setQuesiton(questions["src"][nextQuestionId]);
     setCurrentId(nextQuestionId);
+    if (Number(nextQuestionId) > Object.keys(questions["src"]).length) {
+      Router.push("/users/output");
+    }
   };
 
   const Judge = (e: any, code: string) => {
@@ -64,7 +64,7 @@ const Play = () => {
         code = code.replace(/'/g, '"');
       }
       if (code === question) {
-        dispatch(addAnswers(code));
+        dispatch(addSrcAnswers(code));
         setCode("");
         setAlertText("正解です。");
         let nextQuestionId = (Number(currentId) + 1).toString();
@@ -105,8 +105,8 @@ const Play = () => {
         <div className="text-center text-red-500">{alertText}</div>
       </div>
       <div className="w-1/4  text-lg">
-        {answers.length > 0 &&
-          answers.map((answer: string, index: number) => (
+        {srcAnswers.length > 0 &&
+          srcAnswers.map((answer: string, index: number) => (
             <div className="ml-24" key={index}>
               {index + 1} : {answer}
             </div>

@@ -8,7 +8,7 @@ import { signOutUser } from "../../../redux/slices/userSlice";
 
 type PROPS = {};
 
-const Header: React.FC<PROPS> = (props) => {
+const Header: React.FC<PROPS> = () => {
   const dispatch = useDispatch();
   const user = useSelector(getUser).user;
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, updateUserState } from "../../redux/slices/userSlice";
 import { useRouter } from "next/router";
@@ -11,7 +11,7 @@ const Auth = ({ children }: any) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (router.pathname === "/users/play") {
+    if (router.pathname.match("/users(/S)?")) {
       if (!user.isSignedIn /*reduxのStateがfalseならば */) {
         Router.push("/signin"); // signinページに飛ばす
       }
@@ -21,7 +21,7 @@ const Auth = ({ children }: any) => {
   useEffect(() => {
     if (!user.isSignedIn /*reduxのStateがfalseならば */) {
       // updateStateUser(user);
-      /* firebaseでログインしているかどうか調べてしていなければsigninに返す関数 */
+      /* firebaseでログインしているかどうか調べてして,いなければsigninに返す関数 */
       auth.onAuthStateChanged(async (user) => {
         if (user) {
           const uid = user.uid;

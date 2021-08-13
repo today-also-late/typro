@@ -1,9 +1,13 @@
 import Head from "next/head";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
-import { ContainedButton } from "../components/atoms";
+import { ContainedButton, PrimaryButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
+import { emptyAnswers } from "../../redux/slices/answersSlice";
+import Router from "next/router";
+import { emptyQuestions } from "../../redux/slices/questionSlice";
 
 type HOME = {
   title: string;
@@ -21,10 +25,20 @@ export default function Home({
   content2_1,
 }: HOME) {
   const dispatch = useDispatch();
-  const isSignedIn = useSelector(getUser).user.isSignedIn;
   const user = useSelector(getUser).user;
 
-  console.log(user);
+  useEffect(() => {
+    dispatch(emptyAnswers());
+    dispatch(emptyQuestions());
+  }, []);
+
+  const handleClick = () => {
+    if (user.isSignedIn) {
+      Router.push("/users/selectlanguage");
+    } else {
+      Router.push("/signin");
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -48,10 +62,7 @@ export default function Home({
           </div>
 
           <div className="w-1/2 text-center">
-            <ContainedButton
-              label={"登録してプレイ"}
-              href={"/users/selectlanguage"}
-            />
+            <PrimaryButton label={"登録してプレイ"} onClick={handleClick} />
           </div>
         </div>
       </div>

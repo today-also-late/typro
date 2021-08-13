@@ -2,20 +2,19 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "../../components/atoms";
-import { addSrcAnswers } from "../../../redux/slices/answersSlice";
+import {
+  addOutputAnswers,
+  emptyOutputAnswers,
+} from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers } from "../../../redux/slices/answersSlice";
-import {
-  getQuestions,
-  updateQuestionsState,
-} from "../../../redux/slices/questionSlice";
-import { emptyAnswers } from "../../../redux/slices/answersSlice";
+import { getQuestions } from "../../../redux/slices/questionSlice";
+import Router from "next/router";
 
 const Play = () => {
   const dispatch = useDispatch();
 
-  const srcAnswers = useSelector(getAnswers).answers.src;
-
+  const answers = useSelector(getAnswers).answers; // answers.srcとanswers.outputがある
   const questions = useSelector(getQuestions).questions;
 
   const [code, setCode] = useState("");
@@ -35,17 +34,17 @@ const Play = () => {
   );
 
   useEffect(() => {
-    dispatch(emptyAnswers()); // リロードされたときにanswerstateを空にする
-    dispatch(updateQuestionsState({ language: "Python", level: "1" }));
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
+    dispatch(emptyOutputAnswers());
     displayNextQuestion(currentId);
-  }, [questions]);
+  }, []);
 
   const displayNextQuestion = (nextQuestionId: string) => {
-    setQuesiton(questions["src"][nextQuestionId]);
+    setQuesiton(questions["output"][nextQuestionId]);
     setCurrentId(nextQuestionId);
+    if (Number(nextQuestionId) > Object.keys(questions["output"]).length) {
+      alert("おめでとうございます。クリアです。");
+      //   Router.push("/");
+    }
   };
 
   const Judge = (e: any, code: string) => {
@@ -53,8 +52,9 @@ const Play = () => {
       if (code.match(/'/)) {
         code = code.replace(/'/g, '"');
       }
+      console.log(question);
       if (code === question) {
-        dispatch(addSrcAnswers(code));
+        dispatch(addOutputAnswers(code));
         setCode("");
         setAlertText("正解です。");
         let nextQuestionId = (Number(currentId) + 1).toString();
@@ -67,18 +67,20 @@ const Play = () => {
 
   return (
     <body className="w-screen h-screen flex justify-center items-center">
-      <div className="w-1/4 text-center">
-        <div className="">menu</div>
-        <br />
-        <div className="">ヒント</div>
-        <br />
-        <div className="">一時停止</div>
-        <br />
-        <div className="">出力</div>
-        <br />
+      <div className="w-1/4  text-lg">
+        {answers.src.length > 0 &&
+          answers.src.map((answer: string, index: number) => (
+            <div className="ml-24" key={index}>
+              {index + 1} : {answer}
+            </div>
+          ))}
       </div>
       <div className="w-2/4">
-        <h1 className="text-center font-mono text-2xl">{question}</h1>
+        <h1 className="text-center font-mono text-2xl">
+          {Number(currentId) <= Object.keys(questions["output"]).length
+            ? currentId + "の出力は?"
+            : "スコア: 100"}
+        </h1>
         <TextInput
           fullWidth={true}
           autoFocus={true}
@@ -95,8 +97,8 @@ const Play = () => {
         <div className="text-center text-red-500">{alertText}</div>
       </div>
       <div className="w-1/4  text-lg">
-        {srcAnswers.length > 0 &&
-          srcAnswers.map((answer: string, index: number) => (
+        {answers.output.length > 0 &&
+          answers.output.map((answer: string, index: number) => (
             <div className="ml-24" key={index}>
               {index + 1} : {answer}
             </div>

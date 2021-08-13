@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { auth, FirebaseTimestamp, db, fb } from "../../src/firebase/firebase";
 import Router from "next/router";
+import { persistor } from "../store";
 
 export type userState = {
   user: {
@@ -59,12 +60,10 @@ export const signOutUser = createAsyncThunk("user/signOutUser", async () => {
   auth.signOut();
 
   return {
-    user: {
-      uid: "",
-      username: "",
-      email: "",
-      isSignedIn: false,
-    },
+    uid: "",
+    username: "",
+    email: "",
+    isSignedIn: false,
   };
 });
 
@@ -103,7 +102,7 @@ export const addUser = createAsyncThunk(
           .then(() => {
             console.log("登録成功");
             return {
-              user: userInitialData,
+              userInitialData,
             };
           });
       }
@@ -132,12 +131,10 @@ export const fetchUser = createAsyncThunk(
     ).data();
 
     return {
-      user: {
-        uid: uid,
-        username: data.username,
-        email: data.email,
-        isSignedIn: true,
-      },
+      uid: uid,
+      username: data.username,
+      email: data.email,
+      isSignedIn: true,
     };
   }
 );
@@ -147,21 +144,26 @@ const userSlice = createSlice({
   name: "user", //スライスの名前を設定
   initialState, //stateの初期値を設定
   reducers: {
-    updateUserState: (state, action: any) => ({
+    updateUserState: (state: userState, action: any) => ({
       user: {
-        ...state,
         ...action.payload,
       } /* もとの配列を展開して新しい配列を作る */,
     }),
   },
   extraReducers: (builder) => {
+    builder.addCase(addUser.fulfilled, (state, action: any) => {
+      state.user = action.payload; // payloadCreatorでreturnされた値
+      alert("登録完了しました。");
+      Router.push("/");
+    });
     // fetchUserというcreateAsyncThunkが正常終了した場合のReducer
     builder.addCase(fetchUser.fulfilled, (state, action: any) => {
-      state.user = action.payload.user; // payloadCreatorでreturnされた値
+      state.user = action.payload; // payloadCreatorでreturnされた値
+      alert("ログインしました。");
       Router.push("/");
     });
     builder.addCase(signOutUser.fulfilled, (state, action: any) => {
-      state.user = action.payload.user;
+      state.user = action.payload;
       alert("サインアウトしました。");
       Router.push("/");
     });
