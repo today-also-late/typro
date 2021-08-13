@@ -5,7 +5,7 @@ service cloud.firestore {
       match /users/{userId} {
         allow read: if request.auth.uid != null;
         allow create;
-        allow updata: if request.auth.uid == userId;
+        allow update: if request.auth.uid == userId;
         allow delete: if request.auth.uid == userId;
       }
       match /questions/{quetionId} {
