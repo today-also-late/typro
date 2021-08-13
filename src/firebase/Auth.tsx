@@ -37,6 +37,10 @@ const Auth = ({ children }: any) => {
                   username: data.username,
                   isSignedIn: true,
                   email: data.email,
+                  image: {
+                    id: data.image.id,
+                    path: data.image.path,
+                  },
                 })
               );
             });
