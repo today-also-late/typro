@@ -106,3 +106,5 @@ defaultに各自のプロジェクトのIDを記述してください
 firebase deploy --only functions
 
 curl -X POST https://YOUR_REGION-YOUR_PROJECT_NAME.cloudfunctions.net/addDataset -H "Content-Type:application/json" -d @questions.json
+
+npm install firebase-admin firebase-functions
