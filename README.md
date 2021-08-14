@@ -103,8 +103,11 @@ defaultに各自のプロジェクトのIDを記述してください
 
 ## firebaseに問題を追加するとき
 
+npm install firebase-admin firebase-functions
+
 firebase deploy --only functions
 
 curl -X POST https://YOUR_REGION-YOUR_PROJECT_NAME.cloudfunctions.net/addDataset -H "Content-Type:application/json" -d @questions.json
 
-npm install firebase-admin firebase-functions
+## firebase not perimisionのとき
+firebase deploy --only firestore:rules
