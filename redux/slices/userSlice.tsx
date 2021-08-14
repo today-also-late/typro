@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
-import { auth, FirebaseTimestamp, db, fb } from "../../src/firebase/firebase";
+import {
+  auth,
+  FirebaseTimestamp,
+  db,
+  storage,
+} from "../../src/firebase/firebase";
 import Router from "next/router";
 import { persistor } from "../store";
 
@@ -10,6 +15,10 @@ export type userState = {
     username: string;
     email: string;
     isSignedIn: boolean;
+    image: {
+      id: string;
+      path: string;
+    };
   };
 };
 
@@ -19,9 +28,13 @@ export const initialState: userState = {
     username: "",
     email: "",
     isSignedIn: false,
+    image: {
+      id: "",
+      path: "",
+    },
   },
 };
-type userinfo = {
+type fetchuser = {
   email: string;
   password: string;
 };
@@ -33,28 +46,86 @@ type adduser = {
   confirmPassword: string;
 };
 
-// export const listenAuthState = createAsyncThunk(
-//   "user/listenAuthState",
-//   async () => {
-//     const response = auth.currentUser;
+export type userimage = {
+  uid: string;
+  image: {
+    id: string;
+    path: string;
+  };
+};
 
-//     console.log(response);
-//     auth.onIdTokenChanged();
+export const deleteUserImage = createAsyncThunk(
+  "user/deleteUserImage",
+  async (deleteuserimage: userimage) => {
+    const uid = deleteuserimage.uid;
+    const image = deleteuserimage.image;
 
-//     // const data: any = await (
-//     //   await db.collection("users").doc(uid).get()
-//     // ).data();
+    storage.ref("images").child(image.id).delete();
 
-//     // return {
-//     //   user: {
-//     //     uid: uid,
-//     //     username: data.username,
-//     //     email: data.email,
-//     //     isSignedIn: true,
-//     //   },
-//     // };
-//   }
-// );
+    const data: any = await (
+      await db.collection("users").doc(uid).get()
+    ).data();
+    const timestamp = FirebaseTimestamp.now();
+
+    const userUpdateData = {
+      created_at: data.created_at,
+      email: data.email,
+      uid: uid,
+      updated_at: timestamp,
+      username: data.username,
+      isSignedIn: true,
+      image: {
+        id: "",
+        path: "",
+      },
+    };
+
+    db.collection("users")
+      .doc(uid)
+      .set(userUpdateData)
+      .then(() => {
+        console.log("更新完了");
+      });
+
+    return {
+      userUpdateData,
+    };
+  }
+);
+
+export const addUserImage = createAsyncThunk(
+  "user/addUserImage",
+  async (adduserimage: userimage) => {
+    const uid = adduserimage.uid;
+    const image = adduserimage.image;
+
+    const data: any = await (
+      await db.collection("users").doc(uid).get()
+    ).data();
+    const timestamp = FirebaseTimestamp.now();
+
+    const userUpdateData = {
+      created_at: data.created_at,
+      email: data.email,
+      uid: uid,
+      updated_at: timestamp,
+      username: data.username,
+      isSignedIn: true,
+      image: image,
+    };
+
+    db.collection("users")
+      .doc(uid)
+      .set(userUpdateData)
+      .then(() => {
+        console.log("更新成功");
+      });
+
+    return {
+      userUpdateData,
+    };
+  }
+);
 
 export const signOutUser = createAsyncThunk("user/signOutUser", async () => {
   auth.signOut();
@@ -64,6 +135,10 @@ export const signOutUser = createAsyncThunk("user/signOutUser", async () => {
     username: "",
     email: "",
     isSignedIn: false,
+    image: {
+      id: "",
+      path: "",
+    },
   };
 });
 
@@ -94,6 +169,10 @@ export const addUser = createAsyncThunk(
           uid: uid,
           updated_at: timestamp,
           username: username,
+          image: {
+            id: "",
+            path: "",
+          },
         };
 
         db.collection("users")
@@ -101,10 +180,11 @@ export const addUser = createAsyncThunk(
           .set(userInitialData)
           .then(() => {
             console.log("登録成功");
-            return {
-              userInitialData,
-            };
           });
+
+        return {
+          userInitialData,
+        };
       }
     });
   }
@@ -112,8 +192,8 @@ export const addUser = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   "user/fetchUser",
-  async (userinfo: userinfo) => {
-    const { email, password } = userinfo;
+  async (fetchuser: fetchuser) => {
+    const { email, password } = fetchuser;
 
     //   if (email === '' || password === ''){
     //     alert('必須項目が未入力です')
@@ -135,6 +215,10 @@ export const fetchUser = createAsyncThunk(
       username: data.username,
       email: data.email,
       isSignedIn: true,
+      image: {
+        id: data.image.id,
+        path: data.image.path,
+      },
     };
   }
 );
@@ -167,14 +251,14 @@ const userSlice = createSlice({
       alert("サインアウトしました。");
       Router.push("/");
     });
-    // builder.addCase(listenAuthState.fulfilled, (state, action: any) => {
-    //   console.log(action.payload);
-    //   state.user = action.payload;
-    //   Router.push("/");
-    // });
-    // builder.addCase(listenAuthState.rejected, (state, action: any) => {
-    //   Router.push("/signin");
-    // });
+    builder.addCase(addUserImage.fulfilled, (state, action: any) => {
+      state.user = action.payload;
+      alert("画像の登録が完了しました。");
+    });
+    builder.addCase(deleteUserImage.fulfilled, (state, action: any) => {
+      state.user = action.payload;
+      alert("画像の削除が完了しました。");
+    });
   },
 });
 

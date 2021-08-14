@@ -16,10 +16,16 @@ const Selectlanguage = () => {
   return (
     <div className="w-full h-full">
       <div className="pt-72  flex items-center justify-center">
-        <div className="w-1/3 h-1/3 text-center text-6xl">
+        <div className="w-1/3 h-1/3 text-center">
           <PrimaryButton
             label={"おっPython"}
             onClick={() => goSelectLevel("Python")}
+          />
+        </div>
+        <div className="w-1/3 h-1/3 text-center">
+          <PrimaryButton
+            label={"JavaScript"}
+            onClick={() => goSelectLevel("JavaScript")}
           />
         </div>
       </div>
