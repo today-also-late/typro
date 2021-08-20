@@ -2,13 +2,13 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "../../components/atoms";
-import { addSrcAnswers } from "../../../redux/slices/answersSlice";
+import { addFirstSrcAnswers } from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers } from "../../../redux/slices/answersSlice";
 import {
   getQuestions,
   updateQuestionsState,
-} from "../../../redux/slices/questionSlice";
+} from "../../../redux/slices/questionsSlice";
 import { emptyAnswers } from "../../../redux/slices/answersSlice";
 
 const Play = () => {
@@ -54,7 +54,7 @@ const Play = () => {
         code = code.replace(/'/g, '"');
       }
       if (code === question) {
-        dispatch(addSrcAnswers(code));
+        dispatch(addFirstSrcAnswers(code));
         setCode("");
         setAlertText("正解です。");
         let nextQuestionId = (Number(currentId) + 1).toString();

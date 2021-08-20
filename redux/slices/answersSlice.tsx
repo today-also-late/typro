@@ -1,17 +1,35 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  bindActionCreators,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { RootState } from "../store";
 
 export type AnswersState = {
   answers: {
-    src: string[];
-    output: string[];
+    1: {
+      src: string[];
+      output: string[];
+    };
+    2: {
+      src: string[];
+      output: string[];
+    };
+    miss: number[];
   };
 };
 
 export const initialState: AnswersState = {
   answers: {
-    src: [],
-    output: [],
+    1: {
+      src: [],
+      output: [],
+    },
+    2: {
+      src: [],
+      output: [],
+    },
+    miss: [],
   },
 };
 
@@ -19,42 +37,41 @@ const answersSlice = createSlice({
   name: "answers",
   initialState,
   reducers: {
-    addSrcAnswers: (state, action: PayloadAction<string>) => ({
-      answers: {
-        src: [...state.answers.src, action.payload],
-        output: [],
-        /* もとの配列を展開して新しい配列を作る */
-      },
-    }),
-    emptyAnswers: () => ({
-      answers: {
-        src: [],
-        output: [],
-        /* もとの配列を展開して新しい配列を作る */
-      },
-    }),
-    addOutputAnswers: (state, action: PayloadAction<string>) => ({
-      answers: {
-        src: [...state.answers.src],
-        output: [...state.answers.output, action.payload],
-        /* もとの配列を展開して新しい配列を作る */
-      },
-    }),
-    emptyOutputAnswers: (state) => ({
-      answers: {
-        src: [...state.answers.src],
-        output: [],
-        /* もとの配列を展開して新しい配列を作る */
-      },
-    }),
+    addFirstSrcAnswers: (state: any, action: PayloadAction<string>) =>
+      void state.answers[1]["src"].push(action.payload),
+    addSecondSrcAnswers: (state: any, action: PayloadAction<string>) =>
+      void state.answers[2]["src"].push(action.payload),
+    addFirstOutputAnswers: (state, action: PayloadAction<string>) =>
+      void state.answers[1]["output"].push(action.payload),
+    addSecondOutputAnswers: (state, action: PayloadAction<string>) =>
+      void state.answers[2]["output"].push(action.payload),
+    addMissAnswers: (state, action: PayloadAction<number>) =>
+      void state.answers["miss"].push(action.payload),
+    emptyAnswers: () => {
+      return initialState;
+    },
+    emptySecondSrcAnswers: (state) => {
+      state.answers[2]["src"] = [];
+    },
+    emptyFirstOutputAnswers: (state) => {
+      state.answers[1]["output"] = [];
+    },
+    emptySecondOutputAnswers: (state) => {
+      state.answers[2]["output"] = [];
+    },
   },
 });
 
 export const {
-  addSrcAnswers,
+  addFirstSrcAnswers,
+  addSecondSrcAnswers,
+  addFirstOutputAnswers,
+  addSecondOutputAnswers,
+  addMissAnswers,
   emptyAnswers,
-  addOutputAnswers,
-  emptyOutputAnswers,
+  emptySecondSrcAnswers,
+  emptyFirstOutputAnswers,
+  emptySecondOutputAnswers,
 } = answersSlice.actions;
 
 export const getAnswers = (state: RootState) => state.answers;
