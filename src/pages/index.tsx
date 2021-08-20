@@ -5,9 +5,9 @@ import { getUser } from "../../redux/slices/userSlice";
 import styles from "../../styles/Home.module.css";
 import { ContainedButton, PrimaryButton } from "../components/atoms";
 import ITyped from "../firebase/ityped";
-import { emptyAnswers } from "../../redux/slices/answersSlice";
+import { emptyAnswers, getAnswers } from "../../redux/slices/answersSlice";
 import Router from "next/router";
-import { emptyQuestions } from "../../redux/slices/questionSlice";
+import { emptyQuestions } from "../../redux/slices/questionsSlice";
 
 type HOME = {
   title: string;
@@ -26,10 +26,12 @@ export default function Home({
 }: HOME) {
   const dispatch = useDispatch();
   const user = useSelector(getUser).user;
+  const answers = useSelector(getAnswers).answers;
 
   useEffect(() => {
     dispatch(emptyAnswers());
     dispatch(emptyQuestions());
+    console.log(user);
   }, []);
 
   const handleClick = () => {

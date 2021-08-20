@@ -2,8 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "../../../redux/slices/userSlice";
 import { Label } from "../atoms/index";
-import BeforeLoginButton from "../molecules/beforeloginButton";
-import AfterLoginButton from "../molecules/afterLoginButton";
+import { AfterLoginButton, BeforeLoginButton } from "../molecules/index";
 
 type PROPS = {};
 
