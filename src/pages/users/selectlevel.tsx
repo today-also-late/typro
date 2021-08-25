@@ -12,6 +12,7 @@ const Selectlanguage = () => {
       query: {
         language: router.query["language"],
         level: selectedLevel,
+        count: 1,
       },
     });
   };
@@ -20,9 +21,12 @@ const Selectlanguage = () => {
     <div className="w-full h-full">
       <div className="pt-72  flex items-center justify-center">
         <div className="w-1/3 h-1/3 text-center text-6xl">
-          <PrimaryButton label={"1"} onClick={() => goToPlay("1")} />
-          <PrimaryButton label={"2"} onClick={() => goToPlay("2")} />
-          <PrimaryButton label={"3"} onClick={() => goToPlay("3")} />
+          <PrimaryButton label={"easy"} onClick={() => goToPlay("easy")} />
+          <PrimaryButton label={"normal"} onClick={() => goToPlay("normal")} />
+          <PrimaryButton
+            label={"difficult"}
+            onClick={() => goToPlay("difficult")}
+          />
         </div>
       </div>
     </div>

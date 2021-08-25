@@ -2,33 +2,38 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TextInput } from "../../components/atoms";
-import { addSrcAnswers } from "../../../redux/slices/answersSlice";
+import {
+  addFirstSrcAnswers,
+  addSecondSrcAnswers,
+  addMissAnswers,
+  emptySecondSrcAnswers,
+} from "../../../redux/slices/answersSlice";
 import { useEffect } from "react";
 import { getAnswers, emptyAnswers } from "../../../redux/slices/answersSlice";
 import {
   getQuestions,
   updateQuestionsState,
-} from "../../../redux/slices/questionSlice";
-import { db } from "../../firebase/firebase";
-import { useRouter } from "next/router";
-import Router from "next/router";
+} from "../../../redux/slices/questionsSlice";
+import Router, { useRouter } from "next/router";
 
 const Play = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const srcAnswers = useSelector(getAnswers).answers.src;
+  const answers = useSelector(getAnswers).answers;
   const questions = useSelector(getQuestions).questions;
 
   const language: any = router.query["language"];
   const level: any = router.query["level"];
+  const count: any = router.query["count"];
 
   const selected = { language: language, level: level };
 
   const [code, setCode] = useState("");
-  const [question, setQuesiton] = useState("");
-  const [currentId, setCurrentId] = useState("1");
+  const [question, setQuestion] = useState("");
+  const [currentId, setCurrentId] = useState(1);
   const [alertText, setAlertText] = useState("");
+  const [missCount, setMissCount] = useState(0);
 
   const InputCode = useCallback(
     (event) => {
@@ -42,20 +47,41 @@ const Play = () => {
   );
 
   useEffect(() => {
-    dispatch(emptyAnswers()); // リロードされたときにanswerstateを空にする
-    dispatch(updateQuestionsState(selected));
+    if (Number(count) === 1) {
+      dispatch(updateQuestionsState(selected)); // dbからquestionをとってくる
+      dispatch(emptyAnswers());
+    }
+    if (Number(count) === 2) {
+      dispatch(emptySecondSrcAnswers());
+    }
   }, []);
 
   useEffect(() => {
     displayNextQuestion(currentId);
+    if (Number(count) === 1) {
+      performance.mark("question:start");
+      performance.mark("question1:start");
+    }
+
+    if (Number(count) === 2) {
+      performance.mark("question2:start");
+    }
   }, [questions]);
 
-  const displayNextQuestion = (nextQuestionId: string) => {
-    setQuesiton(questions["src"][nextQuestionId]);
-    setCurrentId(nextQuestionId);
-    if (Number(nextQuestionId) > Object.keys(questions["src"]).length) {
-      Router.push("/users/output");
+  const displayNextQuestion = (nextQuestionId: number) => {
+    if (nextQuestionId > Object.keys(questions[Number(count)]["src"]).length) {
+      dispatch(addMissAnswers(missCount));
+      Router.push({
+        pathname: "/users/output",
+        query: {
+          language: language,
+          level: level,
+          count: count,
+        },
+      });
     }
+    setQuestion(questions[Number(count)]["src"][nextQuestionId]);
+    setCurrentId(nextQuestionId);
   };
 
   const Judge = (e: any, code: string) => {
@@ -64,12 +90,17 @@ const Play = () => {
         code = code.replace(/'/g, '"');
       }
       if (code === question) {
-        dispatch(addSrcAnswers(code));
+        if (Number(count) === 1) {
+          dispatch(addFirstSrcAnswers(code));
+        } else if (Number(count) === 2) {
+          dispatch(addSecondSrcAnswers(code));
+        }
         setCode("");
         setAlertText("正解です。");
-        let nextQuestionId = (Number(currentId) + 1).toString();
+        let nextQuestionId = currentId + 1; // srcの次の問題
         displayNextQuestion(nextQuestionId);
       } else {
+        setMissCount((prevState) => prevState + 1);
         setAlertText("コードが違います。");
       }
     }
@@ -77,16 +108,7 @@ const Play = () => {
 
   return (
     <body className="w-screen h-screen flex justify-center items-center">
-      <div className="w-1/4 text-center">
-        <div className="">menu</div>
-        <br />
-        <div className="">ヒント</div>
-        <br />
-        <div className="">一時停止</div>
-        <br />
-        <div className="">出力</div>
-        <br />
-      </div>
+      <div className="w-1/4  text-lg"></div>
       <div className="w-2/4">
         <h1 className="text-center font-mono text-2xl">{question}</h1>
         <TextInput
@@ -103,10 +125,11 @@ const Play = () => {
           onKeyDown={(e) => Judge(e, code)}
         />
         <div className="text-center text-red-500">{alertText}</div>
+        <div className="text-center text-red-500">{"miss:" + missCount}</div>
       </div>
       <div className="w-1/4  text-lg">
-        {srcAnswers.length > 0 &&
-          srcAnswers.map((answer: string, index: number) => (
+        {answers[Number(count)]["src"].length > 0 &&
+          answers[Number(count)]["src"].map((answer: string, index: number) => (
             <div className="ml-24" key={index}>
               {index + 1} : {answer}
             </div>

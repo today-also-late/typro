@@ -7,7 +7,6 @@ import {
   storage,
 } from "../../src/firebase/firebase";
 import Router from "next/router";
-import { persistor } from "../store";
 
 export type userState = {
   user: {
@@ -68,12 +67,7 @@ export const deleteUserImage = createAsyncThunk(
     const timestamp = FirebaseTimestamp.now();
 
     const userUpdateData = {
-      created_at: data.created_at,
-      email: data.email,
-      uid: uid,
       updated_at: timestamp,
-      username: data.username,
-      isSignedIn: true,
       image: {
         id: "",
         path: "",
@@ -82,13 +76,20 @@ export const deleteUserImage = createAsyncThunk(
 
     db.collection("users")
       .doc(uid)
-      .set(userUpdateData)
+      .set(userUpdateData, { merge: true })
       .then(() => {
         console.log("更新完了");
       });
 
     return {
-      userUpdateData,
+      uid: uid,
+      username: data.username,
+      email: data.email,
+      image: {
+        id: "",
+        path: "",
+      },
+      isSignedIn: true,
     };
   }
 );
@@ -105,24 +106,23 @@ export const addUserImage = createAsyncThunk(
     const timestamp = FirebaseTimestamp.now();
 
     const userUpdateData = {
-      created_at: data.created_at,
-      email: data.email,
-      uid: uid,
       updated_at: timestamp,
-      username: data.username,
-      isSignedIn: true,
       image: image,
     };
 
     db.collection("users")
       .doc(uid)
-      .set(userUpdateData)
+      .set(userUpdateData, { merge: true })
       .then(() => {
         console.log("更新成功");
       });
 
     return {
-      userUpdateData,
+      uid: uid,
+      username: data.username,
+      email: data.email,
+      image: image,
+      isSignedIn: true,
     };
   }
 );
@@ -131,14 +131,7 @@ export const signOutUser = createAsyncThunk("user/signOutUser", async () => {
   auth.signOut();
 
   return {
-    uid: "",
-    username: "",
-    email: "",
-    isSignedIn: false,
-    image: {
-      id: "",
-      path: "",
-    },
+    ...initialState.user,
   };
 });
 
@@ -181,12 +174,30 @@ export const addUser = createAsyncThunk(
           .then(() => {
             console.log("登録成功");
           });
-
-        return {
-          userInitialData,
-        };
       }
     });
+
+    // signupしたらsigninするようにする
+    const response: any = await auth.signInWithEmailAndPassword(
+      email,
+      password
+    );
+
+    const uid = response.user.uid;
+    const data: any = await (
+      await db.collection("users").doc(uid).get()
+    ).data();
+
+    return {
+      uid: uid,
+      username: data.username,
+      email: data.email,
+      isSignedIn: true,
+      image: {
+        id: data.image.id,
+        path: data.image.path,
+      },
+    };
   }
 );
 
