@@ -111,3 +111,6 @@ curl -X POST https://YOUR_REGION-YOUR_PROJECT_NAME.cloudfunctions.net/addDataset
 
 ## firebase not perimisionのとき
 firebase deploy --only firestore:rules
+
+## slackでuserからの問題を受け取るときに設定
+https://typro.slack.com/apps/new/A0F7XDUAZ--incoming-webhook-
